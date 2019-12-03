@@ -1,0 +1,40 @@
+server:
+  port: 10010
+spring:
+  #过滤返回值为null 空
+  jackson:
+    default-property-inclusion: non_null
+  application:
+    name: card
+  datasource:
+    url: jdbc:mysql://localhost:3306/ly_card?characterEncoding=UTF-8
+    username: root
+    password: root
+ly:
+  jwt:
+    secret: ly@Login(Auth}*^31)&ztr6%f3q2 # 登录校验的密钥
+    pubKeyPath: /rsa.pub # 公钥地址
+    priKeyPath: /rsa.pri # 私钥地址
+    expire: 30 # 过期时间,单位分钟
+    cookieName: LY_TOKEN
+    cookieMaxAge: 1800
+
+
+wx:
+  config:
+    appid: XXXXXXXXXX
+    secret: XXXXXXXXXXXXXXXXXXXXXX
+
+# 自定义文件上传路径
+web:
+  # ffmpeg_path: C:/image/ffmpeg.exe
+  image: jpeg,jpg,png,bmp
+  video: avi,mp4,flv
+
+  upload-path:
+    C:/image  #这里末尾没有/斜杠
+  domain: http://www.lycard.com/video   #末尾没有 / 斜杠
+
+#跨域的前台域名
+cors:
+  url: http://localhost:10085
