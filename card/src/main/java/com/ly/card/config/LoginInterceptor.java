@@ -53,6 +53,16 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             UserInfo userInfo = JwtUtils.getUserInfo(props.getPublicKey(), token);
             //放入线程域中
             t1.set(userInfo);
+
+
+            //生成Token【放到响应头中】
+//            try {
+//                String token1 = JwtUtils.generateToken(t1.get(), props.getPrivateKey(), props.getExpire());
+//                response.setHeader("token",token1);
+//            } catch (Exception e) {
+//                throw new LyException(ExceptionEnum.GENERATE_TOKEN_FAIL);
+//            }
+
             return true;
         } catch (Exception e) {
             //抛出异常，未登录
@@ -64,12 +74,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         //生成Token【放到响应头中】
-        try {
-            String token = JwtUtils.generateToken(t1.get(), props.getPrivateKey(), props.getExpire());
-            response.setHeader("token",token);
-        } catch (Exception e) {
-            throw new LyException(ExceptionEnum.GENERATE_TOKEN_FAIL);
-        }
+//        try {
+//            String token = JwtUtils.generateToken(t1.get(), props.getPrivateKey(), props.getExpire());
+//            response.setHeader("token",token);
+//        } catch (Exception e) {
+//            throw new LyException(ExceptionEnum.GENERATE_TOKEN_FAIL);
+//        }
 
         //过滤器完成后，从线程域中删除用户信息
         t1.remove();

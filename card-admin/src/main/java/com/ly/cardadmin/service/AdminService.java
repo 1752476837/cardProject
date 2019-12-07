@@ -55,4 +55,13 @@ public class AdminService {
 
 
     }
+
+    public  Admin queryPassword(Long id) {
+       return adminMapper.queryPassword(id);
+    }
+
+    //更新密码和盐
+    public void updatePassWord(Long id,Admin newAdmin) {
+        adminMapper.updatePassWord(id,newAdmin);
+    }
 }

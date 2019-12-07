@@ -22,11 +22,27 @@ public interface CardMapper extends BaseMapper<Card,Long> {
     @Insert("insert into card (user_id,file,file_type) values (#{userId},#{file},#{fileType})")
     void addFileUrl(@Param("userId") Long userId, @Param("file") String fileUrl,@Param("fileType") String type);
 
-    @Select("select name,phone,company,position,head_image from card where user_id = #{id}")
-    Card getMyCard(Long userId);
+    @Select("select * from card where user_id = #{id}")
+    @Results({
+            @Result(id = true,property = "id",column = "id"),
+            @Result(property = "name",column = "name"),
+            @Result(property = "phone",column = "phone"),
+            @Result(property = "company",column = "company"),
+            @Result(property = "position",column = "position"),
+            @Result(property = "headImage",column = "head_image")
+    })
+    Card getMyCard(@Param("id") Long userId);
 
     //查询收藏列表
-    @Select("select card.name,card.phone,card.company,card.position,card.head_image from collect,card where collect.user_id =#{id} and card.id = collect.card_id")
+    @Select("select card.user_id,card.name,card.phone,card.company,card.position,card.head_image from collect,card where collect.user_id =#{id} and card.id = collect.card_id")
+    @Results({
+            @Result(property = "name",column = "name"),
+            @Result(property = "userId",column = "user_id"),
+            @Result(property = "phone",column = "phone"),
+            @Result(property = "company",column = "company"),
+            @Result(property = "position",column = "position"),
+            @Result(property = "headImage",column = "head_image")
+    })
     List<Card> queryCardListByUserId(Long userId);
 
     //添加收藏

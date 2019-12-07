@@ -16,6 +16,7 @@ public class BaseCard {
     private String position;
     private String address;
     private String mail;
+    private String headImage;
 
 
 }

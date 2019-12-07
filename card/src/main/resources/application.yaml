@@ -7,23 +7,23 @@ spring:
   application:
     name: card
   datasource:
-    url: jdbc:mysql://localhost:3306/ly_card?characterEncoding=UTF-8
-    username: root
-    password: root
+    url: jdbc:mysql://111.230.250.188:3306/bmp?characterEncoding=UTF-8
+    username: bmp
+    password: bmp
 ly:
   jwt:
     secret: ly@Login(Auth}*^31)&ztr6%f3q2 # 登录校验的密钥
     pubKeyPath: /rsa.pub # 公钥地址
     priKeyPath: /rsa.pri # 私钥地址
-    expire: 30 # 过期时间,单位分钟
+    expire: 5256000 # 过期时间,单位分钟   10年不过期
     cookieName: LY_TOKEN
     cookieMaxAge: 1800
 
 
 wx:
   config:
-    appid: XXXXXXXXXX
-    secret: XXXXXXXXXXXXXXXXXXXXXX
+    appid: wx8aaffc8ca4853e25
+    secret: e0d2a4b8c7f8dd37a56ed3aaedf68696
 
 # 自定义文件上传路径
 web:
@@ -32,9 +32,9 @@ web:
   video: avi,mp4,flv
 
   upload-path:
-    C:/image  #这里末尾没有/斜杠
-  domain: http://www.lycard.com/video   #末尾没有 / 斜杠
+    /video  #这里末尾没有/斜杠
+  domain: http://yfteach.cn/video   #末尾没有 / 斜杠
 
 #跨域的前台域名
 cors:
-  url: http://localhost:10085
+  url: http://localhost
