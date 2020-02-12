@@ -23,6 +23,7 @@ public class MvcConfig implements WebMvcConfigurer {
         //配置登录拦截器
         registry.addInterceptor(new LoginInterceptor(props)).addPathPatterns("/**")
                 .excludePathPatterns("/login")
+                .excludePathPatterns("/getConfig")
                 .excludePathPatterns("/fileUpload")
             ;
     }

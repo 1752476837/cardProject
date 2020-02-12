@@ -25,16 +25,22 @@ public interface CardMapper extends BaseMapper<Card,Long> {
     @Select("select * from card where user_id = #{id}")
     @Results({
             @Result(id = true,property = "id",column = "id"),
+            @Result(property = "userId",column = "user_id"),
             @Result(property = "name",column = "name"),
             @Result(property = "phone",column = "phone"),
             @Result(property = "company",column = "company"),
             @Result(property = "position",column = "position"),
-            @Result(property = "headImage",column = "head_image")
+            @Result(property = "address",column = "address"),
+            @Result(property = "mail",column = "mail"),
+            @Result(property = "headImage",column = "head_image"),
+            @Result(property = "wxCode",column = "wx_code"),
+            @Result(property = "image",column = "image"),
+            @Result(property = "video",column = "video"),
     })
     Card getMyCard(@Param("id") Long userId);
 
     //查询收藏列表
-    @Select("select card.user_id,card.name,card.phone,card.company,card.position,card.head_image from collect,card where collect.user_id =#{id} and card.id = collect.card_id")
+    @Select("select collect.id,card.user_id,card.name,card.phone,card.company,card.position,card.head_image from collect,card where collect.user_id =#{id} and card.id = collect.card_id order by collect.id desc")
     @Results({
             @Result(property = "name",column = "name"),
             @Result(property = "userId",column = "user_id"),
@@ -55,8 +61,8 @@ public interface CardMapper extends BaseMapper<Card,Long> {
     void removeCollect(@Param("userId") Long userId,@Param("cardId") Long cardId);
 
     //校验当前名片是否已收藏
-    @Select("select * from collect where user_id=#{userId} and card_id = #{cardId}")
-    int verifyCollect(@Param("userId") Long userId,@Param("cardId") Long cardId);
+    @Select("select count(*) from collect where user_id=#{userId} and card_id = #{cardId}")
+    Integer verifyCollect(@Param("userId") Long userId,@Param("cardId") Long cardId);
 
 //    //修改基本信息
 //    @Update("update card set name = #{baseCard.name},phone = #{baseCard.phone},company = #{baseCard.company},position = #{baseCard.position},address = #{baseCard.address},mail = #{baseCard.mail}")

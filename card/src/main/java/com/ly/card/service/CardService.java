@@ -31,6 +31,9 @@ public class CardService {
         if (card == null){
             throw new LyException(ExceptionEnum.CONTENT_IS_NOT_NULL);
         }
+        if (StringUtils.isBlank(card.getName())){
+            throw new LyException(ExceptionEnum.NAME_IS_NOT_NULL);
+        }
 
         int count = cardMapper.queryCountByUserId(userId);
         if (count == 0){ //新增
@@ -84,7 +87,8 @@ public class CardService {
 
     //校验改名片是否被收藏
     public Boolean verifyCollect(Long userId, Long cardId) {
-        int count = cardMapper.verifyCollect(userId, cardId);
+        Integer count = cardMapper.verifyCollect(userId, cardId);
+        //System.out.println("数量："+count);
         return count == 0?false:true;
     }
 

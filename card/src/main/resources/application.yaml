@@ -1,5 +1,10 @@
 server:
   port: 10010
+#  ssl:
+#    key-store: XXXX.pfx #证书文件的 路径
+#    key-store-password: 123456  # 密码
+#    key-store-type: PKCS12  #证书类型
+
 spring:
   #过滤返回值为null 空
   jackson:

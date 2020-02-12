@@ -56,4 +56,41 @@ public class CardService {
     public Card queryCardById(Long id) {
        return cardMapper.selectByPrimaryKey(id);
     }
+
+
+    /**
+     * 导出全部名片信息
+     * @return
+     */
+    public List<Card> queryAllCard() {
+        List<Card> cards = cardMapper.selectAll();
+        return cards;
+    }
+
+    /**
+     * 导出选中的名片信息
+     * @param ids
+     * @return
+     */
+    public List<Card> querySelectedCard(List<Long> ids) {
+        List<Card> cards = cardMapper.selectByIdList(ids);
+        return cards;
+    }
+
+    /**
+     * 删除指定的名片信息
+     * @param ids
+     */
+    public void deleteCard(List<Long> ids) {
+        cardMapper.deleteByIdList(ids);
+    }
+
+    /**
+     * 修改名片基本信息
+     * @param card
+     */
+    public void updateCard(Card card) {
+        card.setUpdateTime(new Date());
+        cardMapper.updateCard(card);
+    }
 }

@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
@@ -48,7 +45,7 @@ public class UserController {
     private String secret;
 
     @GetMapping("login")
-    public ResponseEntity<String> userLogin(String code, HttpServletResponse response){
+    public ResponseEntity<String> userLogin(@RequestParam("code") String code, HttpServletResponse response){
         JSONObject jsonObject = this.getopenId(code);
         String openid = jsonObject.get("openid").toString();
         String token = null;

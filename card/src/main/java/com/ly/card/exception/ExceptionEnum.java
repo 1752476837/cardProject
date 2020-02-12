@@ -19,7 +19,8 @@ public enum ExceptionEnum {
     USERID_IS_NOT_NULL(400,"用户id不能为空"),
     CONTENT_IS_NOT_NULL(400,"内容不能为空！"),
     NAME_IS_NOT_NULL(400,"姓名不能为空"),
-    GENERATE_TOKEN_FAIL(400,"生成Token失败！")
+    GENERATE_TOKEN_FAIL(400,"生成Token失败！"),
+    CONTENT_FAIL(400,"内容不合法！")
     ;
     private Integer code;
     private String msg;

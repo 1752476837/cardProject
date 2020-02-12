@@ -6,11 +6,21 @@ import com.ly.card.domain.vo.BaseCard;
 import com.ly.card.exception.ExceptionEnum;
 import com.ly.card.exception.LyException;
 import com.ly.card.service.CardService;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author Tarry
@@ -20,16 +30,59 @@ import java.util.List;
 @RequestMapping("card")
 public class CardController {
     @Autowired
+    private RestTemplate restTemplate;
+    @Autowired
     private CardService cardService;
+    @Value("${wx.config.appid}")
+    private String appid;
+    @Value("${wx.config.secret}")
+    private String secret;
+
+
     @GetMapping("go")
     public void get(){
         throw new LyException(ExceptionEnum.LOGIN_FAIL);
+    }
+
+    //请求微信服务器，获取返回值
+    private String getToken(){
+        String accessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+secret;
+        ResponseEntity<String> forEntity = this.restTemplate.getForEntity(accessTokenUrl, String.class);
+        JSONObject jsonObject= JSONObject.fromObject(forEntity.getBody());
+        String access_token = jsonObject.get("access_token").toString();
+        return access_token;
+    }
+    public void msgSecCheck(String content){
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//        MultiValueMap<String, String> map= new LinkedMultiValueMap<String, String>();
+//        map.add("content", content);
+//请求参数JOSN类型
+        JSONObject postData = new JSONObject();
+        postData.put("content",content);
+     //   HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
+        String token = getToken();;
+        String url = "https://api.weixin.qq.com/wxa/msg_sec_check?access_token="+token;
+
+
+        JSONObject json = restTemplate.postForEntity(url, postData, JSONObject.class).getBody();
+        String code = json.get("errcode").toString();
+
+        if (!code.equals("0")){
+            throw new LyException(ExceptionEnum.CONTENT_FAIL);
+        }
     }
 
 
 //  用户新增或更新自己的名片
     @PostMapping("update")
     public ResponseEntity<Void> insertCard(@RequestBody Card card){
+        String content = card.getName()+","+card.getAddress()+","+card.getCompany()
+                +","+card.getMail()+","
+                +card.getPhone()+card.getPosition();
+        msgSecCheck(content);
+        System.out.println(content);
         Long userId = LoginInterceptor.getLoginUser().getId();
         cardService.addCard(userId,card);
         return ResponseEntity.ok().build();
